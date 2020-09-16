@@ -17,7 +17,6 @@ public struct ChunkId : IEquatable<ChunkId>
 
     public static ChunkId FromWorldPos(float x, float y, float z)
     {
-        UnityEngine.Debug.Log("Int val: " + (int)(x / 4));
         return new ChunkId((int)(x / 4), (int)(y / 4), (int)z / 4);
     }
 

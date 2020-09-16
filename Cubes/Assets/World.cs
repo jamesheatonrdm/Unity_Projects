@@ -48,6 +48,7 @@ public class World : MonoBehaviour
 
 	IEnumerator BuildWorld()
 	{
+		int i = 0;
 		foreach(var voxel in voxels)
         {
 			var x = (voxel.Key.x / 4f) + .5f;
@@ -58,18 +59,31 @@ public class World : MonoBehaviour
             {
 				this[x, y, z] = voxelType;
 				Chunk curChunk = Chunks[ChunkId.FromWorldPos(x, y, z)];
-				Vector3 pos = new Vector3((x / 4), y / 4, z / 4);
-
-				curChunk.chunkData[(int)(x % 4) * 4, (int)(y % 4) * 4, (int)(z % 4) * 4] = new Block(Block.BlockType.DIRT, pos,
+				//Vector3 pos = new Vector3((x / 4), y / 4, z / 4);
+				Vector3 pos = new Vector3(x, y, z);
+				if (i == 0)
+                {
+					Debug.Log("x: " + x + "y: " + y + "z: " + z);
+					Debug.Log("x / 4: " + x / 4 + "y / 4: " + y / 4 + "z / 4: " + z / 4);
+					i++;
+                }
+				curChunk.chunkData[(int) ((x % 4) * 4), (int) ((y % 4) * 4), (int)((z % 4) * 4)] = new Block(Block.BlockType.DIRT, pos,
 					curChunk.chunk, curChunk);
             }
 			catch (KeyNotFoundException e)
             {
-				Vector3 chunkPosition = new Vector3((x / 4), (y / 4), (z / 4));
+				//Vector3 chunkPosition = new Vector3((int) (x / 4), (int) (y / 4), (int)(z / 4));
+				Vector3 chunkPosition = new Vector3(((x - (x % 4)) / 1024),((y - (y % 4)) / 1024), ((z - (z % 4)) / 1024));
+				//Vector3 chunkPosition = new Vector3((int)(x - (x % 4) / 32), (int)(y - (y % 4) / 32), (int)(z - (z % 4) / 32));
+				Vector3 pos = new Vector3(x, y, z);
+				Vector3 diff = pos - chunkPosition;
+				Debug.Log("Coord within chunk: " + diff);
+				Debug.Log("Indices: " + (diff.x % 4) * 4 + ", " + (diff.y % 4) * 4 + ", " + (diff.z % 4) * 4);
 				Chunk c = new Chunk(chunkPosition, textureAtlas);
 				c.chunk.transform.parent = this.transform;
+				c.chunkData = new Block[chunkSize * 4, chunkSize * 4, chunkSize * 4];
 				Chunks.Add(new ChunkId((int)(x / 4), (int)(y / 4), (int)(z / 4)), c);
-				c.chunkData[(int)(x % 4) * 4, (int)(y % 4) * 4, (int)(z % 4) * 4] = new Block(Block.BlockType.DIRT, chunkPosition,
+				c.chunkData[(int)((x % 4) * 4), (int)((y % 4) * 4), (int)((z % 4) * 4)] = new Block(Block.BlockType.DIRT, pos,
 					c.chunk, c);
 
 			}

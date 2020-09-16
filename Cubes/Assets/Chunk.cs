@@ -107,4 +107,17 @@ public class Chunk {
 
 	}
 
+	public void debug()
+    {
+		for (int x = 0; x < chunkData.GetLength(0); x++)
+        {
+			for (int y = 0; y < chunkData.GetLength(1); y++)
+            {
+				for (int z = 0; z < chunkData.GetLength(2); z++)
+                {
+					Debug.Log(chunkData[x, y, z]);
+                }
+            }
+        }
+    }
 }

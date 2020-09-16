@@ -84,6 +84,8 @@ public class Block {
 		Vector3 p6 = new Vector3(  0.125f,   0.125f, -0.125f );
 		Vector3 p7 = new Vector3( -0.125f,   0.125f, -0.125f );
 
+
+
 		switch(side)
 		{
 			case Cubeside.BOTTOM:
@@ -212,4 +214,9 @@ public class Block {
 		if (!HasSolidNeighbour((int) ((position.x + .25f) * 4), (int) (position.y * 4), (int) (position.z * 4)))
 			CreateQuad(Cubeside.RIGHT);
 	}
+
+	public Vector3 getPos()
+    {
+		return position;
+    }
 }
